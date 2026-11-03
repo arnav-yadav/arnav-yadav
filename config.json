@@ -2,7 +2,7 @@
   "identity": {
     "name": "Arnav Yadav",
     "handle": "arnav-yadav",
-    "eyebrow": "BENGALURU, INDIA",
+    "eyebrow": "CS UNDERGRAD · BENGALURU",
     "roleShort": "backend + AI agents engineer",
     "school": "Scaler School of Technology · BITS Pilani",
     "taught": "25 students, DSA and projects (buddy / TA)",
@@ -107,11 +107,15 @@
       "stats": [
         [
           "5",
-          "retrieval techniques, each a toggle"
+          "techniques, each a toggle"
         ],
         [
           "3",
           "file types: PDF, txt, csv"
+        ],
+        [
+          "ms",
+          "timed at every stage"
         ]
       ],
       "object": "sieve trays and a stopwatch",
@@ -171,11 +175,15 @@
       "stats": [
         [
           "5",
-          "step agent loop"
+          "step loop, think to output"
         ],
         [
           "0",
-          "shell access: custom tools only"
+          "Lorem Ipsum, real DOM"
+        ],
+        [
+          "429",
+          "triggers key rotation"
         ]
       ],
       "object": "pantograph tracing a page",
@@ -200,12 +208,16 @@
       "stack": "React 19 · Express · MongoDB · Stream SDKs",
       "stats": [
         [
+          "1:1",
+          "chat and video calls"
+        ],
+        [
           "30+",
           "UI themes"
         ],
         [
-          "2",
-          "Stream SDKs: chat and video"
+          "live",
+          "deployed on Render"
         ]
       ],
       "object": "two chairs and a lamp",

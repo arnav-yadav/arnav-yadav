@@ -69,7 +69,7 @@ function svgDoc({ width, height, ink, label, body, css = "", iso = false }) {
 // A topic as a bench instrument: three partition tracks of records, a
 // producer hopper appending at the head, and a consumer gantry whose read
 // heads sit over the newest record of every track. The dial reads lag 0.
-function logMachine(W, H, { n = 26, azimuth = 62, callouts = false } = {}) {
+function logMachine(W, H, { n = 26, azimuth = 62 } = {}) {
   const N = n, STEP = 9.5, RW = 4.2, RD = 17, RH = 19, X0 = -150;
   const PLATE = { x: X0 - 26, y: -64, w: N * STEP + 80, d: 128, r: 9 };
   const TRACKS = [-32, 0, 32];
@@ -171,19 +171,6 @@ function logMachine(W, H, { n = 26, azimuth = 62, callouts = false } = {}) {
   }
   items.sort((a, b) => a.d - b.d);
   out.push(...items.map((i) => i.svg));
-  if (callouts) {
-    // Three mono callouts say what the machine is: a leader from a dot on the
-    // part up to a label in the clear band above the machine.
-    const tag = ([x, y], dy, text, anchor = "start") => {
-      const ty = 16; // one shared baseline in the band above the machine
-      return `<line x1="${x.toFixed(1)}" y1="${(y - 3).toFixed(1)}" x2="${x.toFixed(1)}" y2="${(ty + 6).toFixed(1)}" stroke="var(--anatomy-mid)" stroke-width="1"/>` +
-        `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.6" fill="var(--anatomy-lit)"/>` +
-        T(x + (anchor === "end" ? 8 : -8), ty, text, { f: "mono", w: 500, size: 14, fill: "muted", anchor });
-    };
-    out.push(tag(at([X0 + 4 * STEP + RW / 2, TRACKS[0], 1.6 + RH]), 40, "append-only log"));
-    out.push(tag(at([HOP.x + HOP.w / 2, HOP.y + 10, 34]), 40, "producer"));
-    out.push(tag(at([GX, -8, 56]), 40, "consumer · lag 0", "end"));
-  }
   return `<svg x="0" y="0" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" overflow="visible">${out.join("")}</svg>`;
 }
 
@@ -232,9 +219,9 @@ function plate(ink, project, fig) {
   if (project.credit) body.push(T(48, y + 32, project.credit, { f: "mono", w: 500, size: 14, fill: "accent" }));
   body.push(`<line class="draw" x1="48" x2="440" y1="292" y2="292" stroke="${ink.rule}" pathLength="1"/>`);
   project.stats.forEach(([value, label], i) => {
-    const x = 48 + i * (project.stats.length === 2 ? 196 : 130);
+    const x = 48 + i * 130;
     body.push(T(x, 332, value, { w: 700, size: 34, track: -1 }));
-    wrap(label, project.stats.length === 2 ? 26 : 16).forEach((line, j) => body.push(T(x, 356 + j * 18, line, { size: 14, fill: "muted" })));
+    wrap(label, 16).forEach((line, j) => body.push(T(x, 356 + j * 18, line, { size: 14, fill: "muted" })));
   });
   body.push(`<g transform="translate(462 18)" style="color:${ink.muted}">${svg}</g>`);
   body.push(T(842, 374, project.object, { f: "mono", w: 400, size: 13, fill: "muted", anchor: "end" }));
@@ -258,9 +245,9 @@ function card(ink, project, fig) {
     `<line class="draw" x1="24" x2="416" y1="398" y2="398" stroke="${ink.rule}" pathLength="1"/>`,
   ];
   project.stats.forEach(([value, label], i) => {
-    const x = 24 + i * (project.stats.length === 2 ? 196 : 136);
+    const x = 24 + i * 136;
     body.push(T(x, 434, value, { w: 700, size: 25, track: -0.6 }));
-    wrap(label, project.stats.length === 2 ? 28 : 19).forEach((line, j) => body.push(T(x, 455 + j * 15, line, { size: 12.5, fill: "muted" })));
+    wrap(label, 19).forEach((line, j) => body.push(T(x, 455 + j * 15, line, { size: 12.5, fill: "muted" })));
   });
   const plateCss = ".draw{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.2s .2s cubic-bezier(.32,.72,0,1) forwards}@keyframes draw{to{stroke-dashoffset:0}}@media (prefers-reduced-motion:reduce){.draw{stroke-dashoffset:0}}";
   const label = `${project.title.join(" ")}. ${project.hook.join(" ")} ${project.stats.map(([v, l]) => `${v} ${l}`).join(", ")}.`;
@@ -279,9 +266,9 @@ function compactPlate(ink, project, fig) {
     `<g transform="translate(476 14)" style="color:${ink.muted}">${svg}</g>`,
   ];
   project.stats.forEach(([value, label], i) => {
-    const x = 48 + i * (project.stats.length === 2 ? 196 : 130);
+    const x = 48 + i * 130;
     body.push(T(x, 220, value, { w: 700, size: 28, track: -0.8 }));
-    wrap(label, project.stats.length === 2 ? 26 : 17).forEach((line, j) => body.push(T(x, 241 + j * 16, line, { size: 13, fill: "muted" })));
+    wrap(label, 17).forEach((line, j) => body.push(T(x, 241 + j * 16, line, { size: 13, fill: "muted" })));
   });
   const plateCss = ".draw{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.2s .2s cubic-bezier(.32,.72,0,1) forwards}@keyframes draw{to{stroke-dashoffset:0}}@media (prefers-reduced-motion:reduce){.draw{stroke-dashoffset:0}}";
   const label = `${project.title.join(" ")}. ${project.hook.join(" ")} ${project.stats.map(([v, l]) => `${v} ${l}`).join(", ")}.`;
@@ -308,34 +295,19 @@ function pairSvg(cards, stacked) {
 const id = config.identity;
 
 function heroA(ink) {
-  const W = 880, H = 570;
+  const W = 880, H = 560;
   const body = [
     T(48, 62, id.eyebrow, { f: "mono", w: 500, size: 16, fill: "muted", track: 2.4 }),
     T(44, 150, id.name, { w: 700, size: 92, track: -3.5 }),
     `<rect x="48" y="184" width="28" height="3" fill="${ink.accent}"/>`,
     ...id.hook.map((line, i) => T(48, 228 + i * 34, line, { w: 500, size: 28, track: -0.6 })),
     ...id.about.map((line, i) => T(600, 222 + i * 26, line, { size: 18, fill: "soft" })),
-    `<g transform="translate(0 300)">${logMachine(880, 252, { n: 40, azimuth: 66, callouts: true })}</g>`,
+    `<g transform="translate(0 290)">${logMachine(880, 262, { n: 40, azimuth: 66 })}</g>`,
   ];
   return svgDoc({ width: W, height: H, ink, iso: true, css: MACHINE_CSS, label: `${id.name}. ${id.hook.join(" ")} ${id.about.join(" ")}`, body: body.join("") });
 }
 
-// Phone version of the hero: same content restacked at 440 wide so the type
-// stays readable when GitHub shrinks it to a ~360px column.
-function heroPhone(ink) {
-  const W = 440, H = 430;
-  const body = [
-    T(26, 44, id.eyebrow, { f: "mono", w: 500, size: 13, fill: "muted", track: 2 }),
-    T(23, 104, id.name, { w: 700, size: 58, track: -2.2 }),
-    `<rect x="26" y="126" width="24" height="3" fill="${ink.accent}"/>`,
-    ...id.hook.map((line, i) => T(26, 164 + i * 28, line, { w: 500, size: 24, track: -0.5 })),
-    T(26, 230, id.about.join(" ").replace("School of Technology and", "School of Technology and"), { size: 14.5, fill: "soft" }),
-    `<g transform="translate(0 250)">${logMachine(440, 170, { n: 24, azimuth: 64 })}</g>`,
-  ];
-  return svgDoc({ width: W, height: H, ink, iso: true, css: MACHINE_CSS, label: `${id.name}. ${id.hook.join(" ")} ${id.about.join(" ")}`, body: body.join("") });
-}
-
-// ---------- idle loop -----------------------------------------------------------
+// ---------- off the keyboard ----------------------------------------------------
 // The personal bits: puzzles, films, facts, mentoring, a Wordle solve and the
 // fact of the day (rotates daily through data/facts.json).
 const WORDLE = { dark: { hit: "#538D4E", near: "#B59F3B", miss: "#3A3A3C" }, light: { hit: "#6AAA64", near: "#C9B458", miss: "#787C7E" } };
@@ -354,7 +326,7 @@ function offKeyboard(ink, theme) {
   const day = Math.floor(Date.parse(BUILT) / 864e5);
   const fact = facts[day % facts.length];
   const body = [
-    T(46, 84, "Idle loop", { w: 700, size: 38, track: -1.2 }),
+    T(46, 84, "Off the keyboard", { w: 700, size: 38, track: -1.2 }),
     ...config.personal.rows.map(([k, v], i) => T(48, 132 + i * 32, k, { f: "mono", w: 400, size: 14, fill: "muted" }) + T(140, 132 + i * 32, v, { size: 18, fill: "soft" })),
   ];
   const t = 34, gap = 5, wx = 832 - (5 * t + 4 * gap), wy = 52;
@@ -367,7 +339,7 @@ function offKeyboard(ink, theme) {
   body.push(`<line x1="48" x2="832" y1="262" y2="262" stroke="${ink.rule}"/>`);
   body.push(T(48, 296, "FACT OF THE DAY", { f: "mono", w: 500, size: 13, fill: "accent", track: 1.6 }));
   wrap2(fact, 62).forEach((line, i) => body.push(T(220, 296 + i * 24, line, { size: 18, fill: "ink" })));
-  return svgDoc({ width: W, height: H, ink, css: ".c-tile{fill:#FFFFFF}", label: `Idle loop. ${config.personal.rows.map(([k, v]) => `${k} ${v}`).join("; ")}. Fact of the day: ${fact}`, body: body.join("") });
+  return svgDoc({ width: W, height: H, ink, css: ".c-tile{fill:#FFFFFF}", label: `Off the keyboard. ${config.personal.rows.map(([k, v]) => `${k} ${v}`).join("; ")}. Fact of the day: ${fact}`, body: body.join("") });
 }
 
 // Wrap to as many lines as needed at ~max characters.
@@ -382,13 +354,12 @@ function wrap2(text, max) {
 }
 
 // ---------- link buttons ------------------------------------------------------
-const BUTTONS = [["linkedin", "linkedin", id.links.linkedin], ["email", "email", id.links.email], ["repos", "repositories", `${id.links.github}?tab=repositories`]];
-// Links as log-style tags: square corners, mono, an amber arrow leading.
+const BUTTONS = [["linkedin", "LinkedIn", id.links.linkedin], ["email", "Email", id.links.email], ["repos", "All repositories", `${id.links.github}?tab=repositories`]];
 function button(ink, label) {
-  const w = Math.round(label.length * 9 + 58), h = 36;
+  const w = Math.round(label.length * 9.4 + 62), h = 40;
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" aria-label="${esc(label)}"><title>${esc(label)}</title><style>/*@fonts*/.c-ink{fill:${ink.ink}}.c-accent{fill:${ink.accent}}</style>` +
-    `<rect x=".5" y=".5" width="${w - 1}" height="${h - 1}" rx="5" fill="${ink.panel}" stroke="${ink.rule}"/>` +
-    T(16, 23, "→", { f: "mono", w: 600, size: 15, fill: "accent" }) + T(38, 23, label, { f: "mono", w: 500, size: 15 }) + `</svg>`;
+    `<rect x=".5" y=".5" width="${w - 1}" height="${h - 1}" rx="20" fill="${ink.panel}" stroke="${ink.rule}"/>` +
+    T(20, 26, label, { w: 600, size: 16, track: -0.1 }) + T(w - 22, 26, "↗", { w: 600, size: 16, fill: "accent", anchor: "middle" }) + `</svg>`;
 }
 
 const figs = {};
@@ -405,7 +376,6 @@ for (const theme of ["light", "dark"]) {
     for (const p of config.projects) writeFileSync(join(OUT, `plate-${p.slug}-${theme}.svg`), draw(INKS[theme], p, figs[p.slug]));
   }
   writeFileSync(join(OUT, `hero-a-${theme}.svg`), heroA(INKS[theme]));
-  writeFileSync(join(OUT, `hero-a-phone-${theme}.svg`), heroPhone(INKS[theme]));
   writeFileSync(join(OUT, `off-keyboard-${theme}.svg`), offKeyboard(INKS[theme], theme));
   for (const [slug, label] of BUTTONS) writeFileSync(join(OUT, `btn-${slug}-${theme}.svg`), button(INKS[theme], label));
 }
@@ -416,13 +386,8 @@ const pic = (name, alt, href, width = "100%") => {
   const img = `<picture><source media="(prefers-color-scheme: dark)" srcset="./assets/${name}-dark.svg?v=${v}"><img alt="${esc(alt)}" src="./assets/${name}-light.svg?v=${v}" width="${width}"></picture>`;
   return href ? `<a href="${href}">${img}</a>` : img;
 };
-const phonePic = (name, alt) => `<picture>` +
-  `<source media="(prefers-color-scheme: dark) and (max-width: 640px)" srcset="./assets/${name}-phone-dark.svg?v=${BUILT}">` +
-  `<source media="(max-width: 640px)" srcset="./assets/${name}-phone-light.svg?v=${BUILT}">` +
-  `<source media="(prefers-color-scheme: dark)" srcset="./assets/${name}-dark.svg?v=${BUILT}">` +
-  `<img alt="${esc(alt)}" src="./assets/${name}-light.svg?v=${BUILT}" width="100%"></picture>`;
-const md = [phonePic("hero-a", `${id.name}. ${id.hook.join(" ")} ${id.about.join(" ")}`), "",
-  `<p>${BUTTONS.map(([slug, label, href]) => `<a href="${href}"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/btn-${slug}-dark.svg?v=${BUILT}"><img alt="${label}" src="./assets/btn-${slug}-light.svg?v=${BUILT}" height="36"></picture></a>`).join("&nbsp;")}</p>`, ""];
+const md = [pic("hero-a", `${id.name}. ${id.hook.join(" ")} ${id.about.join(" ")}`), "",
+  `<p>${BUTTONS.map(([slug, label, href]) => `<a href="${href}"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/btn-${slug}-dark.svg?v=${BUILT}"><img alt="${label}" src="./assets/btn-${slug}-light.svg?v=${BUILT}" height="40"></picture></a>`).join("&nbsp;")}</p>`, ""];
 const repoOf = (p) => (p.repo ? `https://github.com/${p.repo}` : undefined);
 const repoLink = (p) => (p.repo ? `<a href="${repoOf(p)}">${p.repo.split("/")[1]} ↗</a>` : "");
 const notes = (p) => [...p.details.map((d) => `- ${d}`), ...(p.live ? [`- [Live demo](${p.live})`] : [])];
@@ -454,7 +419,7 @@ if (LAYOUT === "grid") {
     md.push(...details([p]), "", LAYOUT === "full" ? "<br>" : "", "");
   }
 }
-md.push(pic("off-keyboard", "Idle loop: the puzzles I solve, films, random facts, and mentoring as a buddy / TA."), "");
+md.push(pic("off-keyboard", "Off the keyboard: the puzzles I solve, films, random facts, and mentoring as a buddy / TA."), "");
 md.push(`<sub>Every image here is drawn by <code>tools/build.mjs</code>. Figures are made with the <a href="https://github.com/wheresryan22/anatomy">anatomy</a> kit (MIT). Type: Schibsted Grotesk and JetBrains Mono, SIL Open Font License.</sub>`, "");
 writeFileSync(join(OUT, "..", "README.md"), md.join("\n"));
 console.log("built", OUT);
