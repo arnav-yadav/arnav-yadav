@@ -1,6 +1,6 @@
-<picture><source media="(prefers-color-scheme: dark)" srcset="./assets/hero-a-dark.svg?v=2026-11-03"><img alt="Arnav Yadav. I build backends and AI agents. CS at Scaler School of Technology and BITS Pilani." src="./assets/hero-a-light.svg?v=2026-11-03" width="100%"></picture>
+<picture><source media="(prefers-color-scheme: dark) and (max-width: 640px)" srcset="./assets/hero-a-phone-dark.svg?v=2026-11-03"><source media="(max-width: 640px)" srcset="./assets/hero-a-phone-light.svg?v=2026-11-03"><source media="(prefers-color-scheme: dark)" srcset="./assets/hero-a-dark.svg?v=2026-11-03"><img alt="Arnav Yadav. I build backends and AI agents. CS at Scaler School of Technology and BITS Pilani." src="./assets/hero-a-light.svg?v=2026-11-03" width="100%"></picture>
 
-<p><a href="https://www.linkedin.com/in/arnav-yadav02/"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/btn-linkedin-dark.svg?v=2026-11-03"><img alt="LinkedIn" src="./assets/btn-linkedin-light.svg?v=2026-11-03" height="40"></picture></a>&nbsp;<a href="mailto:arnavyadav02.work@gmail.com"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/btn-email-dark.svg?v=2026-11-03"><img alt="Email" src="./assets/btn-email-light.svg?v=2026-11-03" height="40"></picture></a>&nbsp;<a href="https://github.com/arnav-yadav?tab=repositories"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/btn-repos-dark.svg?v=2026-11-03"><img alt="All repositories" src="./assets/btn-repos-light.svg?v=2026-11-03" height="40"></picture></a></p>
+<p><a href="https://www.linkedin.com/in/arnav-yadav02/"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/btn-linkedin-dark.svg?v=2026-11-03"><img alt="linkedin" src="./assets/btn-linkedin-light.svg?v=2026-11-03" height="36"></picture></a>&nbsp;<a href="mailto:arnavyadav02.work@gmail.com"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/btn-email-dark.svg?v=2026-11-03"><img alt="email" src="./assets/btn-email-light.svg?v=2026-11-03" height="36"></picture></a>&nbsp;<a href="https://github.com/arnav-yadav?tab=repositories"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/btn-repos-dark.svg?v=2026-11-03"><img alt="repositories" src="./assets/btn-repos-light.svg?v=2026-11-03" height="36"></picture></a></p>
 
 <picture><source media="(prefers-color-scheme: dark) and (max-width: 640px)" srcset="./assets/row-1-phone-dark.svg?v=2026-11-03"><source media="(max-width: 640px)" srcset="./assets/row-1-phone-light.svg?v=2026-11-03"><source media="(prefers-color-scheme: dark)" srcset="./assets/row-1-dark.svg?v=2026-11-03"><img alt="Real-time event monitoring: Six services, one Kafka log, and no event processed twice. | Website automation agent: A task in plain English in, real clicks on a real page out." src="./assets/row-1-light.svg?v=2026-11-03" width="100%"></picture>
 
@@ -27,7 +27,7 @@
 
 <picture><source media="(prefers-color-scheme: dark) and (max-width: 640px)" srcset="./assets/row-2-phone-dark.svg?v=2026-11-03"><source media="(max-width: 640px)" srcset="./assets/row-2-phone-light.svg?v=2026-11-03"><source media="(prefers-color-scheme: dark)" srcset="./assets/row-2-dark.svg?v=2026-11-03"><img alt="RetrievAI Advanced: Chat with a document, and watch every retrieval stage get timed. | Pluggable rate limiter: Guards paid external APIs, only where a call actually happens." src="./assets/row-2-light.svg?v=2026-11-03" width="100%"></picture>
 
-<details><summary><b>How these work</b> · <a href="https://github.com/arnav-yadav/AdvancedRAG_Notebook">AdvancedRAG_Notebook ↗</a> · <a href="https://github.com/arnav-yadav/Rate-Limiter-Design-main">Rate-Limiter-Design-main ↗</a></summary>
+<details><summary><b>How these work</b> · <a href="https://github.com/arnav-yadav/AdvancedRAG_Notebook">AdvancedRAG_Notebook ↗</a> · <a href="https://github.com/arnav-yadav/rate-limiter">rate-limiter ↗</a></summary>
 
 **RetrievAI Advanced**
 
@@ -91,6 +91,6 @@
 
 <br>
 
-<picture><source media="(prefers-color-scheme: dark)" srcset="./assets/off-keyboard-dark.svg?v=2026-11-03"><img alt="Off the keyboard: the puzzles I solve, films, random facts, and mentoring as a buddy / TA." src="./assets/off-keyboard-light.svg?v=2026-11-03" width="100%"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="./assets/off-keyboard-dark.svg?v=2026-11-03"><img alt="Idle loop: the puzzles I solve, films, random facts, and mentoring as a buddy / TA." src="./assets/off-keyboard-light.svg?v=2026-11-03" width="100%"></picture>
 
 <sub>Every image here is drawn by <code>tools/build.mjs</code>. Figures are made with the <a href="https://github.com/wheresryan22/anatomy">anatomy</a> kit (MIT). Type: Schibsted Grotesk and JetBrains Mono, SIL Open Font License.</sub>
