@@ -1,6 +1,6 @@
 // v3 generator: draws every image in two inks. Fonts are embedded afterwards
 // by tools/embed_fonts.py, which reads the data-f attribute on each text run.
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, readdirSync, unlinkSync, writeFileSync } from "node:fs";
 import { existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -13,9 +13,11 @@ const KIT = process.env.ANATOMY_KIT || join(ROOT, "vendor", "anatomy", "iso-kit.
 const k = await import(KIT);
 const config = JSON.parse(readFileSync(join(ROOT, "config.json"), "utf8"));
 // Build date drives the fact of the day and the cache-busting ?v= on image URLs.
+const LAYOUT = process.env.LAYOUT || config.layout || "full";
 const BUILT = process.env.BUILD_DATE || new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" });
 const OUT = join(ROOT, process.argv[2] || "assets");
 mkdirSync(OUT, { recursive: true });
+for (const f of readdirSync(OUT)) if (f.endsWith(".svg")) unlinkSync(join(OUT, f)); // drop images from a previous layout
 
 // ---------- inks ----------------------------------------------------------
 const INKS = {
@@ -228,6 +230,67 @@ function plate(ink, project, fig) {
   return svgDoc({ width: W, height: H, ink, iso: true, css: plateCss + css, label, body: body.join("") });
 }
 
+// Two denser layouts, chosen by config.layout (or LAYOUT): "grid" is a
+// two-up gallery card, "compact" a shorter full-width plate. Same rules as
+// the plate: identical template for every project, order from config only.
+function card(ink, project, fig) {
+  const W = 440, H = 486;
+  const { svg, css = "" } = fig(k, 400, 236);
+  const body = [
+    `<g transform="translate(20 12)" style="color:${ink.muted}">${svg}</g>`,
+    `<circle cx="29" cy="${278 - 4.5}" r="3.5" fill="${ink.accent}"/>`,
+    T(40, 278, project.domain, { f: "mono", w: 500, size: 13, fill: "muted", track: 1.6 }),
+    T(23, 316, project.title.join(" "), { w: 700, size: 27, track: -0.8 }),
+    ...project.hook.map((line, i) => T(24, 346 + i * 22, line, { w: 500, size: 16, fill: "soft" })),
+    `<line class="draw" x1="24" x2="416" y1="398" y2="398" stroke="${ink.rule}" pathLength="1"/>`,
+  ];
+  project.stats.forEach(([value, label], i) => {
+    const x = 24 + i * 136;
+    body.push(T(x, 434, value, { w: 700, size: 25, track: -0.6 }));
+    wrap(label, 19).forEach((line, j) => body.push(T(x, 455 + j * 15, line, { size: 12.5, fill: "muted" })));
+  });
+  const plateCss = ".draw{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.2s .2s cubic-bezier(.32,.72,0,1) forwards}@keyframes draw{to{stroke-dashoffset:0}}@media (prefers-reduced-motion:reduce){.draw{stroke-dashoffset:0}}";
+  const label = `${project.title.join(" ")}. ${project.hook.join(" ")} ${project.stats.map(([v, l]) => `${v} ${l}`).join(", ")}.`;
+  return svgDoc({ width: W, height: H, ink, iso: true, css: plateCss + css, label, body: body.join("") });
+}
+
+function compactPlate(ink, project, fig) {
+  const W = 880, H = 272;
+  const { svg, css = "" } = fig(k, 380, 244);
+  const body = [
+    `<circle cx="53" cy="${54 - 5}" r="4" fill="${ink.accent}"/>`,
+    T(66, 54, project.domain, { f: "mono", w: 500, size: 14, fill: "muted", track: 1.8 }),
+    T(46, 98, project.title.join(" "), { w: 700, size: 30, track: -0.9 }),
+    ...project.hook.map((line, i) => T(48, 130 + i * 24, line, { w: 500, size: 18, fill: "soft" })),
+    `<line class="draw" x1="48" x2="440" y1="184" y2="184" stroke="${ink.rule}" pathLength="1"/>`,
+    `<g transform="translate(476 14)" style="color:${ink.muted}">${svg}</g>`,
+  ];
+  project.stats.forEach(([value, label], i) => {
+    const x = 48 + i * 130;
+    body.push(T(x, 220, value, { w: 700, size: 28, track: -0.8 }));
+    wrap(label, 17).forEach((line, j) => body.push(T(x, 241 + j * 16, line, { size: 13, fill: "muted" })));
+  });
+  const plateCss = ".draw{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.2s .2s cubic-bezier(.32,.72,0,1) forwards}@keyframes draw{to{stroke-dashoffset:0}}@media (prefers-reduced-motion:reduce){.draw{stroke-dashoffset:0}}";
+  const label = `${project.title.join(" ")}. ${project.hook.join(" ")} ${project.stats.map(([v, l]) => `${v} ${l}`).join(", ")}.`;
+  return svgDoc({ width: W, height: H, ink, iso: true, css: plateCss + css, label, body: body.join("") });
+}
+
+// Two cards in one image: side by side for wide screens, stacked for phones.
+// Each card is a full SVG document; their styles are joined under one
+// /*@fonts*/ marker so the font embedder subsets once per file.
+function pairSvg(cards, stacked) {
+  const parts = cards.map((svg) => ({ style: svg.match(/<style>([\s\S]*?)<\/style>/)[1].replace("/*@fonts*/", ""), body: svg.slice(svg.indexOf("</style>") + 8, svg.lastIndexOf("</svg>")) }));
+  // Concatenated whole: splitting rules apart would break nested @keyframes/@media blocks.
+  const styles = [...new Set(parts.map((p) => p.style))].join("");
+  const CW = 440, CH = 486, GAP = 14, S = (880 - GAP) / 2 / CW;
+  const place = parts.map((p, i) => stacked
+    ? `<g transform="translate(0 ${i * (CH + GAP)})">${p.body}</g>`
+    : `<g transform="translate(${i * (CW * S + GAP)} 0) scale(${S.toFixed(4)})">${p.body}</g>`).join("");
+  const [w, h] = stacked ? [CW, CH * cards.length + GAP * (cards.length - 1)] : [880, Math.ceil(CH * S)];
+  const label = cards.map((svg) => svg.match(/aria-label="([^"]*)"/)[1]).join(" ");
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" aria-label="${label}" class="iso"><title>${label}</title><style>/*@fonts*/${styles}</style>${place}</svg>`;
+}
+
 // ---------- heroes ---------------------------------------------------------
 const id = config.identity;
 
@@ -302,27 +365,59 @@ function button(ink, label) {
 const figs = {};
 for (const p of config.projects) figs[p.slug] = await figureFor(p.slug);
 for (const theme of ["light", "dark"]) {
-  for (const p of config.projects) writeFileSync(join(OUT, `plate-${p.slug}-${theme}.svg`), plate(INKS[theme], p, figs[p.slug]));
+  if (LAYOUT === "grid") {
+    for (let i = 0; i < config.projects.length; i += 2) {
+      const cards = config.projects.slice(i, i + 2).map((p) => card(INKS[theme], p, figs[p.slug]));
+      writeFileSync(join(OUT, `row-${i / 2 + 1}-${theme}.svg`), pairSvg(cards, false));
+      writeFileSync(join(OUT, `row-${i / 2 + 1}-phone-${theme}.svg`), pairSvg(cards, true));
+    }
+  } else {
+    const draw = { full: plate, compact: compactPlate }[LAYOUT];
+    for (const p of config.projects) writeFileSync(join(OUT, `plate-${p.slug}-${theme}.svg`), draw(INKS[theme], p, figs[p.slug]));
+  }
   writeFileSync(join(OUT, `hero-a-${theme}.svg`), heroA(INKS[theme]));
   writeFileSync(join(OUT, `off-keyboard-${theme}.svg`), offKeyboard(INKS[theme], theme));
   for (const [slug, label] of BUTTONS) writeFileSync(join(OUT, `btn-${slug}-${theme}.svg`), button(INKS[theme], label));
 }
 
 // ---------- README -------------------------------------------------------------
-const pic = (name, alt, href) => {
+const pic = (name, alt, href, width = "100%") => {
   const v = BUILT;
-  const img = `<picture><source media="(prefers-color-scheme: dark)" srcset="./assets/${name}-dark.svg?v=${v}"><img alt="${esc(alt)}" src="./assets/${name}-light.svg?v=${v}" width="100%"></picture>`;
+  const img = `<picture><source media="(prefers-color-scheme: dark)" srcset="./assets/${name}-dark.svg?v=${v}"><img alt="${esc(alt)}" src="./assets/${name}-light.svg?v=${v}" width="${width}"></picture>`;
   return href ? `<a href="${href}">${img}</a>` : img;
 };
 const md = [pic("hero-a", `${id.name}. ${id.hook.join(" ")} ${id.about.join(" ")}`), "",
   `<p>${BUTTONS.map(([slug, label, href]) => `<a href="${href}"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/btn-${slug}-dark.svg?v=${BUILT}"><img alt="${label}" src="./assets/btn-${slug}-light.svg?v=${BUILT}" height="40"></picture></a>`).join("&nbsp;")}</p>`, ""];
-for (const p of config.projects) {
-  const href = p.repo ? `https://github.com/${p.repo}` : undefined;
-  md.push(pic(`plate-${p.slug}`, `${p.title.join(" ")}: ${p.hook.join(" ")}`, href), "");
-  md.push(`<details><summary><b>How it works</b> · ${p.stats.map(([v, l]) => `${v} ${l}`).join(" · ")}</summary>`, "", ...p.details.map((d) => `- ${d}`), "");
-  const links = [href && `[Repository](${href})`, p.live && `[Live demo](${p.live})`].filter(Boolean);
-  if (links.length) md.push(links.join(" · "), "");
-  md.push(`</details>`, "", "<br>", "");
+const repoOf = (p) => (p.repo ? `https://github.com/${p.repo}` : undefined);
+const repoLink = (p) => (p.repo ? `<a href="${repoOf(p)}">${p.repo.split("/")[1]} ↗</a>` : "");
+const notes = (p) => [...p.details.map((d) => `- ${d}`), ...(p.live ? [`- [Live demo](${p.live})`] : [])];
+// One collapsed line per group: the summary carries the repo links (the one
+// thing the images can't), the body says how each project works.
+const details = (group) => {
+  const links = group.map(repoLink).filter(Boolean).join(" · ");
+  const body = group.length === 1 ? notes(group[0]) : group.flatMap((p) => [`**${p.title.join(" ")}**`, "", ...notes(p), ""]);
+  return [`<details><summary><b>How ${group.length === 1 ? "it works" : "these work"}</b>${links ? ` · ${links}` : ""}</summary>`, "", ...body, "", `</details>`];
+};
+if (LAYOUT === "grid") {
+  // One image per pair of projects. <picture> picks the stacked version on
+  // narrow screens and the side-by-side one otherwise, in either theme. The
+  // How-it-works notes (with repo links) follow each row.
+  for (let i = 0; i < config.projects.length; i += 2) {
+    const row = config.projects.slice(i, i + 2), n = i / 2 + 1, v = BUILT;
+    const alt = row.map((p) => `${p.title.join(" ")}: ${p.hook.join(" ")}`).join(" | ");
+    md.push(`<picture>` +
+      `<source media="(prefers-color-scheme: dark) and (max-width: 640px)" srcset="./assets/row-${n}-phone-dark.svg?v=${v}">` +
+      `<source media="(max-width: 640px)" srcset="./assets/row-${n}-phone-light.svg?v=${v}">` +
+      `<source media="(prefers-color-scheme: dark)" srcset="./assets/row-${n}-dark.svg?v=${v}">` +
+      `<img alt="${esc(alt)}" src="./assets/row-${n}-light.svg?v=${v}" width="100%"></picture>`, "");
+    md.push(...details(row), "");
+    md.push("<br>", "");
+  }
+} else {
+  for (const p of config.projects) {
+    md.push(pic(`plate-${p.slug}`, `${p.title.join(" ")}: ${p.hook.join(" ")}`, repoOf(p)), "");
+    md.push(...details([p]), "", LAYOUT === "full" ? "<br>" : "", "");
+  }
 }
 md.push(pic("off-keyboard", "Off the keyboard: the puzzles I solve, films, random facts, and mentoring as a buddy / TA."), "");
 md.push(`<sub>Every image here is drawn by <code>tools/build.mjs</code>. Figures are made with the <a href="https://github.com/wheresryan22/anatomy">anatomy</a> kit (MIT). Type: Schibsted Grotesk and JetBrains Mono, SIL Open Font License.</sub>`, "");

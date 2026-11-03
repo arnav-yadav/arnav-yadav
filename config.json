@@ -325,5 +325,6 @@
         "BUILD"
       ]
     }
-  }
+  },
+  "layout": "grid"
 }

@@ -3,7 +3,7 @@
 // strategy). One cartridge is seated; a spare with a different cut stands
 // beside it. A counter dial on the valve face reads the window. The seated
 // cartridge cap is the one lit part.
-import * as G from "../../../.agents/skills/anatomy/kit/lathe.mjs";
+import * as G from "../../vendor/anatomy/lathe.mjs";
 
 export default function figure(k, W, H) {
   const BASE = { x: -104, y: -46, w: 208, d: 92, r: 7 };

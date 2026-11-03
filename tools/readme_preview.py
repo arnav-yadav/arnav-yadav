@@ -26,7 +26,9 @@ code{font-size:85%;padding:.2em .4em;border-radius:6px;background:rgba(129,139,1
 
 
 def main():
-    html = markdown.markdown((ROOT / "README.md").read_text(), extensions=["extra"])
+    readme = next((a for a in sys.argv[1:] if a.endswith(".md")), "README.md")
+    tag = next((a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--tag=")), "")
+    html = markdown.markdown((ROOT / readme).read_text(), extensions=["extra"])
     page_file = ROOT / "preview.html"
     page_file.write_text(f"<html><head><meta charset=utf-8><title>arnav-yadav README preview</title><style>{CSS}</style></head><body><article>{html}</article></body></html>")
     if "--open" in sys.argv:
@@ -41,7 +43,7 @@ def main():
                 page = browser.new_page(viewport={"width": width, "height": 900}, color_scheme=scheme, device_scale_factor=1.5)
                 page.goto(page_file.as_uri())
                 page.wait_for_timeout(2500)
-                path = out / f"readme-{scheme}-{name}.png"
+                path = out / f"readme{tag}-{scheme}-{name}.png"
                 page.screenshot(path=str(path), full_page=True)
                 page.close()
                 print(path)

@@ -1,7 +1,7 @@
 // Jailbreak Arena as a test rig: an attacker probe on a sliding carriage
 // pushes toward a defender shield held on two coil springs. A dial between
 // them reads the push. The probe tip is the one lit part.
-import * as G from "../../../.agents/skills/anatomy/kit/lathe.mjs";
+import * as G from "../../vendor/anatomy/lathe.mjs";
 
 export default function figure(k, W, H) {
   const BASE = { x: -104, y: -44, w: 208, d: 88, r: 7 };
