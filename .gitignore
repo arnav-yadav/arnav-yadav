@@ -1,0 +1,8 @@
+preview.html
+screenshots/
+mockups/
+node_modules/
+__pycache__/
+assets/src/*.jpeg
+assets/src/*.jpg
+assets/src/*.png
