@@ -1,8 +1,8 @@
-<picture><source media="(prefers-color-scheme: dark)" srcset="./assets/hero-a-dark.svg?v=2026-11-03"><img alt="Arnav Yadav. I build backends and AI agents. CS at Scaler School of Technology and BITS Pilani." src="./assets/hero-a-light.svg?v=2026-11-03" width="100%"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="./assets/hero-a-dark.svg?v=2026-11-04"><img alt="Arnav Yadav. I build backends and AI agents. CS at Scaler School of Technology and BITS Pilani." src="./assets/hero-a-light.svg?v=2026-11-04" width="100%"></picture>
 
-<p><a href="https://www.linkedin.com/in/arnav-yadav02/"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/btn-linkedin-dark.svg?v=2026-11-03"><img alt="LinkedIn" src="./assets/btn-linkedin-light.svg?v=2026-11-03" height="40"></picture></a>&nbsp;<a href="mailto:arnavyadav02.work@gmail.com"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/btn-email-dark.svg?v=2026-11-03"><img alt="Email" src="./assets/btn-email-light.svg?v=2026-11-03" height="40"></picture></a>&nbsp;<a href="https://github.com/arnav-yadav?tab=repositories"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/btn-repos-dark.svg?v=2026-11-03"><img alt="All repositories" src="./assets/btn-repos-light.svg?v=2026-11-03" height="40"></picture></a></p>
+<p><a href="https://www.linkedin.com/in/arnav-yadav02/"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/btn-linkedin-dark.svg?v=2026-11-04"><img alt="LinkedIn" src="./assets/btn-linkedin-light.svg?v=2026-11-04" height="40"></picture></a>&nbsp;<a href="mailto:arnavyadav02.work@gmail.com"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/btn-email-dark.svg?v=2026-11-04"><img alt="Email" src="./assets/btn-email-light.svg?v=2026-11-04" height="40"></picture></a>&nbsp;<a href="https://github.com/arnav-yadav?tab=repositories"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/btn-repos-dark.svg?v=2026-11-04"><img alt="All repositories" src="./assets/btn-repos-light.svg?v=2026-11-04" height="40"></picture></a></p>
 
-<picture><source media="(prefers-color-scheme: dark) and (max-width: 640px)" srcset="./assets/row-1-phone-dark.svg?v=2026-11-03"><source media="(max-width: 640px)" srcset="./assets/row-1-phone-light.svg?v=2026-11-03"><source media="(prefers-color-scheme: dark)" srcset="./assets/row-1-dark.svg?v=2026-11-03"><img alt="Real-time event monitoring: Six services, one Kafka log, and no event processed twice. | Website automation agent: A task in plain English in, real clicks on a real page out." src="./assets/row-1-light.svg?v=2026-11-03" width="100%"></picture>
+<picture><source media="(prefers-color-scheme: dark) and (max-width: 640px)" srcset="./assets/row-1-phone-dark.svg?v=2026-11-04"><source media="(max-width: 640px)" srcset="./assets/row-1-phone-light.svg?v=2026-11-04"><source media="(prefers-color-scheme: dark)" srcset="./assets/row-1-dark.svg?v=2026-11-04"><img alt="Real-time event monitoring: Six services, one Kafka log, and no event processed twice. | Website automation agent: A task in plain English in, real clicks on a real page out." src="./assets/row-1-light.svg?v=2026-11-04" width="100%"></picture>
 
 <details><summary><b>How these work</b> · <a href="https://github.com/arnav-yadav/RealTime-EventMonitor">RealTime-EventMonitor ↗</a> · <a href="https://github.com/arnav-yadav/WebsiteAutomationAgent">WebsiteAutomationAgent ↗</a></summary>
 
@@ -25,7 +25,7 @@
 
 <br>
 
-<picture><source media="(prefers-color-scheme: dark) and (max-width: 640px)" srcset="./assets/row-2-phone-dark.svg?v=2026-11-03"><source media="(max-width: 640px)" srcset="./assets/row-2-phone-light.svg?v=2026-11-03"><source media="(prefers-color-scheme: dark)" srcset="./assets/row-2-dark.svg?v=2026-11-03"><img alt="RetrievAI Advanced: Chat with a document, and watch every retrieval stage get timed. | Pluggable rate limiter: Guards paid external APIs, only where a call actually happens." src="./assets/row-2-light.svg?v=2026-11-03" width="100%"></picture>
+<picture><source media="(prefers-color-scheme: dark) and (max-width: 640px)" srcset="./assets/row-2-phone-dark.svg?v=2026-11-04"><source media="(max-width: 640px)" srcset="./assets/row-2-phone-light.svg?v=2026-11-04"><source media="(prefers-color-scheme: dark)" srcset="./assets/row-2-dark.svg?v=2026-11-04"><img alt="RetrievAI Advanced: Chat with a document, and watch every retrieval stage get timed. | Pluggable rate limiter: Guards paid external APIs, only where a call actually happens." src="./assets/row-2-light.svg?v=2026-11-04" width="100%"></picture>
 
 <details><summary><b>How these work</b> · <a href="https://github.com/arnav-yadav/AdvancedRAG_Notebook">AdvancedRAG_Notebook ↗</a> · <a href="https://github.com/arnav-yadav/rate-limiter">rate-limiter ↗</a></summary>
 
@@ -46,7 +46,7 @@
 
 <br>
 
-<picture><source media="(prefers-color-scheme: dark) and (max-width: 640px)" srcset="./assets/row-3-phone-dark.svg?v=2026-11-03"><source media="(max-width: 640px)" srcset="./assets/row-3-phone-light.svg?v=2026-11-03"><source media="(prefers-color-scheme: dark)" srcset="./assets/row-3-dark.svg?v=2026-11-03"><img alt="Website cloner agent: Point it at a URL. It scrapes the real page, then rebuilds it. | Sahaara: Peer support for mental health, with a real person on the other end." src="./assets/row-3-light.svg?v=2026-11-03" width="100%"></picture>
+<picture><source media="(prefers-color-scheme: dark) and (max-width: 640px)" srcset="./assets/row-3-phone-dark.svg?v=2026-11-04"><source media="(max-width: 640px)" srcset="./assets/row-3-phone-light.svg?v=2026-11-04"><source media="(prefers-color-scheme: dark)" srcset="./assets/row-3-dark.svg?v=2026-11-04"><img alt="Website cloner agent: Point it at a URL. It scrapes the real page, then rebuilds it. | Sahaara: Peer support for mental health, with a real person on the other end." src="./assets/row-3-light.svg?v=2026-11-04" width="100%"></picture>
 
 <details><summary><b>How these work</b> · <a href="https://github.com/arnav-yadav/AIAgentCLI">AIAgentCLI ↗</a> · <a href="https://github.com/arnav-yadav/Sahaara">Sahaara ↗</a></summary>
 
@@ -68,7 +68,7 @@
 
 <br>
 
-<picture><source media="(prefers-color-scheme: dark) and (max-width: 640px)" srcset="./assets/row-4-phone-dark.svg?v=2026-11-03"><source media="(max-width: 640px)" srcset="./assets/row-4-phone-light.svg?v=2026-11-03"><source media="(prefers-color-scheme: dark)" srcset="./assets/row-4-dark.svg?v=2026-11-03"><img alt="Argus: Spots dead services by their silence, and warns before the budget runs out. | Jailbreak Arena: An attacker LLM and a defender LLM in a self-play arms race." src="./assets/row-4-light.svg?v=2026-11-03" width="100%"></picture>
+<picture><source media="(prefers-color-scheme: dark) and (max-width: 640px)" srcset="./assets/row-4-phone-dark.svg?v=2026-11-04"><source media="(max-width: 640px)" srcset="./assets/row-4-phone-light.svg?v=2026-11-04"><source media="(prefers-color-scheme: dark)" srcset="./assets/row-4-dark.svg?v=2026-11-04"><img alt="Argus: Spots dead services by their silence, and warns before the budget runs out. | Jailbreak Arena: An attacker LLM and a defender LLM in a self-play arms race." src="./assets/row-4-light.svg?v=2026-11-04" width="100%"></picture>
 
 <details><summary><b>How these work</b> · <a href="https://github.com/arnav-yadav/argus">argus ↗</a> · <a href="https://github.com/arnav-yadav/jailbreak-arena">jailbreak-arena ↗</a></summary>
 
@@ -91,6 +91,6 @@
 
 <br>
 
-<picture><source media="(prefers-color-scheme: dark)" srcset="./assets/off-keyboard-dark.svg?v=2026-11-03"><img alt="Off the keyboard: the puzzles I solve, films, random facts, and mentoring as a buddy / TA." src="./assets/off-keyboard-light.svg?v=2026-11-03" width="100%"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="./assets/off-keyboard-dark.svg?v=2026-11-04"><img alt="Off the keyboard: the puzzles I solve, films, random facts, and mentoring as a buddy / TA." src="./assets/off-keyboard-light.svg?v=2026-11-04" width="100%"></picture>
 
 <sub>Every image here is drawn by <code>tools/build.mjs</code>. Figures are made with the <a href="https://github.com/wheresryan22/anatomy">anatomy</a> kit (MIT). Type: Schibsted Grotesk and JetBrains Mono, SIL Open Font License.</sub>
